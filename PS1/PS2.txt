@@ -1,0 +1,41 @@
+=======================================================================================================================
+Problem Set 2
+=======================================================================================================================
+
+CREATE DOMAIN score AS int
+CHECK (value >= 0 AND value <= 100);
+
+CREATE TABLE groups (
+    id SERIAL PRIMARY KEY,
+    number VARCHAR(10) NOT NULL UNIQUE
+);
+
+CREATE TABLE student (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    birthdate DATE NOT NULL CHECK (birthdate <= current_date - INTERVAL '17 years'),
+    group_id INTEGER REFERENCES groups(id),  
+    forma VARCHAR(10) NOT NULL CHECK (forma IN ('бюджет', 'контракт')),
+    stipa INTEGER NOT NULL CHECK (CASE WHEN forma = 'бюджет' THEN stipa > 0 ELSE stipa = 0 END)
+);
+
+CREATE TABLE elective (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    about TEXT NOT NULL
+);
+
+CREATE TABLE grade (
+    student_id INTEGER REFERENCES student(id),
+    elective_id INTEGER REFERENCES elective(id),
+    grade INTEGER NOT NULL CHECK (grade >= 2 AND grade <= 5),
+    PRIMARY KEY(student_id, elective_id),
+    UNIQUE (student_id, elective_id, grade),
+    score int
+);
+
+
+=======================================================================================================================
+
+
+5) не понятно для какого столбца ограничить первичный ключ поэтому оба NOT NULL UNIQUE, первому по понтятию второму по контексту

@@ -1,0 +1,133 @@
+=======================================================================================================================
+Problem Set 3
+=======================================================================================================================
+1
+
+SELECT * FROM STUDENT;
+SELECT name,birthdate FROM STUDENT where forma='бюджет';
+SELECT name FROM STUDENT WHERE forma='бюджет' AND birthdate>'2000-01-01';
+
+2
+
+SELECT student.id, student.name, student.birthdate, student.group_id, student.score, student.forma, student.stipa, groups.id FROM STUDENT JOIN group_id
+on student.group_id=groups.number;
+
+SELECT student.name, student.group_id FROM STUDENT JOIN group_id
+on student.group_id=groups.number where group_id.id=2;
+
+3
+
+SELECT student.id, student.name, student.birthdate, student.group_id, student.score, student.forma, student.stipa, elective.name, elective.about FROM STUDENT 
+JOIN group_id
+on student.group_id=groups.number
+JOIN grade 
+on student.id=grade.student_id 
+JOIN elective
+on grade.elective_id = elective.id;
+
+SELECT student.id, student.name, student.birthdate, student.group_id, student.score, student.forma, student.stipa, elective.namae, elective.about FROM STUDENT 
+JOIN group_id
+on student.group_id=groups.number
+JOIN grade 
+on student.id=grade.student_id 
+JOIN elective
+on grade.elective_id = elective.id where name='анжумания' AND group_id.id=2;
+
+4
+
+SELECT forma,COUNT(forma) AS NumOfStud
+FROM STUDENT
+GROUP BY FORMA
+
+alter table student add column Pol boolean;update student set pol=TRUE;
+SELECT pol,COUNT(forma) AS NumOfStud
+FROM STUDENT
+GROUP BY pol
+
+SELECT COUNT(birthdate) AS NumOfStud
+FROM STUDENT
+GROUP BY birthdate>'2000-01-01';
+
+5
+
+SELECT forma, AVG(score) AS avg_score, AVG(grade.score) AS sr_score
+FROM STUDENT
+join grade on student.id=grade.student_id
+GROUP BY forma;
+
+SELECT elective.name, count(score) AS NumOfStud
+FROM STUDENT
+join grade on student.id=grade.student_id
+join elective on grade.elective_id=elective.id where forma='бюджет'
+GROUP BY elective.name;
+
+SELECT elective.name, count(score) AS NumOfStud
+FROM STUDENT
+join grade on student.id=grade.student_id
+join elective on grade.elective_id=elective.id where forma='бюджет' AND birthdate>'2000-01-01'
+GROUP BY elective.name;
+
+6 
+
+SELECT student.group_id, AVG(score) AS s_score, AVG(grade.score) AS s_score
+FROM STUDENT
+join grade on student.id=grade.student_id
+GROUP BY student.group_id;
+
+SELECT groups.number, count(score) AS NumOfStud
+FROM STUDENT
+join group_id on student.group_id=groups.number
+where forma='бюджет' AND score>56
+GROUP BY groups.number;
+
+SELECT elective.name, count(score) AS NumOfStud
+FROM STUDENT
+join grade on student.id=grade.student_id
+join group_id on student.group_id=groups.number
+join elective on grade.elective_id=elective.id where forma='Бюджет' and group_id.id = 1
+GROUP BY elective.name;
+
+7
+
+SELECT groups.number
+FROM STUDENT
+join group_id on student.group_id=groups.number
+GROUP BY groups.number
+having AVG(score)>50;
+
+SELECT elective.name, count(score) AS NumOfStud
+FROM STUDENT
+join grade on student.id=grade.student_id
+join group_id on student.group_id=groups.number
+join elective on grade.elective_id=elective.id 
+GROUP BY elective.name
+having avg(stipa)>10000;
+
+SELECT name, AVG(score)
+FROM STUDENT
+join grade on student.id=grade.student_id
+join group_id on student.group_id=groups.number
+join elective on grade.elective_id=elective.id where forma='контракт' and group_id.id=1
+GROUP BY name
+having AVG(score)>76;
+
+8 
+
+SELECT student.group_id, AVG(score) avg_score
+FROM STUDENT
+GROUP BY groups.number
+order by AVG(score);
+
+SELECT groups.number, count(score) AS NumOfStud
+FROM STUDENT
+join group_id on student.group_id=groups.number
+where forma='бюджет' AND score>56
+GROUP BY groups.number
+order by count(score) desc;
+
+SELECT groups.number
+FROM STUDENT
+join group_id on student.group_id=groups.number
+GROUP BY groups.number
+having AVG(score)>50
+order by AVG(score) desc;
